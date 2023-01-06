@@ -1,0 +1,16 @@
+{
+  // Causes the debug view to automatically appear when a breakpoint is hit. This
+  // setting is global and not configurable per-language.
+  "debug.openDebug": "openOnDebugBreak",
+
+  "[typescriptreact]": {
+    // Automatically format code on save and during typing of certain characters
+    // (like `;` and `}`).
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+
+    // Draw a guide line at 80 characters, where formatting will wrap code.
+    "editor.rulers": [80]
+  }
+}
