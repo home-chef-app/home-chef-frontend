@@ -10,8 +10,8 @@
 
 import React, { useEffect, type PropsWithChildren } from 'react';
 import { ScrollView, Text, useColorScheme } from 'react-native';
-
 import { Provider, useDispatch, useSelector } from 'react-redux';
+import $t from '../i18n';
 import { RootState, store, useAppDispatch } from '../redux';
 import { fetchActiveUser } from '../redux/users/thunks';
 
@@ -39,6 +39,9 @@ const App = ({ fontColor }: TestProps) => {
           Loaded from state: {user?.first_name}
         </Text>
       )}
+      <Text style={{ color: fontColor }}>
+        {$t('helloWorld')}
+      </Text>
     </>
   );
 };

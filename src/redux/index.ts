@@ -5,6 +5,7 @@ import stateReducer from './appState';
 import { useDispatch } from 'react-redux';
 
 export const store = configureStore({
+  devTools: true,
   reducer: {
     appState: stateReducer,
     users: usersReducer,

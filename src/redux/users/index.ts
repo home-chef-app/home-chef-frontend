@@ -1,5 +1,8 @@
-import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '..';
+import {
+  createEntityAdapter,
+  createSlice,
+  PayloadAction,
+} from '@reduxjs/toolkit';
 import { fetchActiveUser } from './thunks';
 
 export type UserType = {
@@ -25,7 +28,11 @@ usersAdapter.getInitialState({
 const usersSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {},
+  reducers: {
+    setActiveUser(state, action: PayloadAction<UserType>) {
+      state.activeUser = action.payload;
+    },
+  },
   extraReducers: builder => {
     builder.addCase(fetchActiveUser.pending, state => {
       console.log('PENDING', state);
