@@ -13,13 +13,13 @@ export type UserType = {
 };
 
 interface UserState {
-  activeUser: UserType | null;
+  activeUsers: UserType[] | null;
 }
 
 export const usersAdapter = createEntityAdapter<UserType>();
 
 const initialState: UserState = {
-  activeUser: null,
+  activeUsers: null,
 };
 usersAdapter.getInitialState({
   example: false,
@@ -29,8 +29,8 @@ const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    setActiveUser(state, action: PayloadAction<UserType>) {
-      state.activeUser = action.payload;
+    setActiveUser(state, action: PayloadAction<UserType[]>) {
+      state.activeUsers = action.payload;
     },
   },
   extraReducers: builder => {
@@ -39,7 +39,7 @@ const usersSlice = createSlice({
     });
     builder.addCase(fetchActiveUser.fulfilled, (state, action) => {
       console.log('SUCESS', action.payload);
-      state.activeUser = action.payload;
+      state.activeUsers = action.payload;
     });
     builder.addCase(fetchActiveUser.rejected, state => {
       console.log('FAILED');

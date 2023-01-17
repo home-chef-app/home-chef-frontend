@@ -6,17 +6,14 @@ import {
 } from '@reduxjs/toolkit';
 
 import { setLoading } from '../appState';
+import { get } from '../../services/apiBaseService';
 
 export const fetchActiveUser = createAsyncThunk(
   'users/fetchActiveUser',
   async (_, thunkAPI) => {
     thunkAPI.dispatch(setLoading(true));
-    // Call async API request
-    return {
-      first_name: 'Evan',
-      last_name: 'Larkin',
-      id: 'uuid',
-      email: 'elarkin@mail.com',
-    };
+    const res = await get('users');
+    thunkAPI.dispatch(setLoading(false));
+    return res;
   },
 );
