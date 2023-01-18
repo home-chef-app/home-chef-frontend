@@ -9,7 +9,7 @@
  */
 
 import React, { useEffect, type PropsWithChildren } from 'react';
-import { ScrollView, Text, useColorScheme, StyleSheet, Image, View, ActivityIndicator } from 'react-native';
+import { ScrollView, Text, useColorScheme, StyleSheet, Image, View, ActivityIndicator, Dimensions } from 'react-native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { UserType } from 'redux/users';
 import $t from '../i18n';
@@ -18,20 +18,31 @@ import { fetchActiveUser } from '../redux/users/thunks';
 
 const styles = StyleSheet.create({
   pageContainer: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '000000',
-    display: 'flex',
-    justifyContent: 'flex-start',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    backgroundColor: '#000000',
+    justifyContent: 'center',
     alignItems: 'center'
   },
   userContainer: {
-    backgroundColor: 'ffffff',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 5
+    backgroundColor: '#ffffff',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    borderColor: '#FFD4D444',
+    margin: 10,
+    padding: 10,
+    width: Dimensions.get('window').width * 0.8,
+    borderRadius: 12,
+    borderWidth: 1
   },
+  userInfo: {
+    flexDirection: 'row',
+
+  },
+  labelText: {
+    fontWeight: '700',
+    paddingRight: 10
+  }
 })
 
 type TestProps = {
@@ -58,11 +69,28 @@ const App = ({ fontColor }: TestProps) => {
         {loading ?
           <ActivityIndicator />
           :
-          <View style={styles.userContainer}>
-            {users!.map((user: UserType) => (
-              <Text key={user.id}>{user.first_name}</Text>
+          <>
+            {users?.map((user: UserType) => (
+              <View key={user.id} style={styles.userContainer}>
+                <View style={styles.userInfo}>
+                  <Text style={styles.labelText}>Id</Text>
+                  <Text>{user.id}</Text>
+                </View>
+                <View style={styles.userInfo}>
+                  <Text style={styles.labelText}>Email</Text>
+                  <Text>{user.email}</Text>
+                </View>
+                <View style={styles.userInfo}>
+                  <Text style={styles.labelText}>First name</Text>
+                  <Text>{user.first_name}</Text>
+                </View>
+                <View style={styles.userInfo}>
+                  <Text style={styles.labelText}>Last name</Text>
+                  <Text>{user.last_name}</Text>
+                </View>
+              </View>
             ))}
-          </View>
+          </>
         }
       </View>
     </>
