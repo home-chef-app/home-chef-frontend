@@ -2,29 +2,86 @@ import config from '../config';
 
 const apiBaseUrl = `${config.API_BASE_URL}/${config.STAGE}/${config.API_VERSION}/`;
 
+// Helper class to make all requests to our api. We can customize as we find a cadence for how we hit our api.
+// No try/catch blocks is intentional, this way we can catch all errors in sagas and handle appropriately. Cormac, 2023-01-19
 export const get = async (path: string) => {
-  console.log(apiBaseUrl + path);
-  try {
-    const resp = await fetch(apiBaseUrl + path, {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        Accept: 'application/json',
-        'Content-type': 'application/json',
-      },
-    });
-    const respJson = await resp.json();
-    const data = getReponseBody(respJson);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
+  console.log('GET: ', apiBaseUrl + path);
+  const resp = await fetch(apiBaseUrl + path, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      Accept: 'application/json',
+      'Content-type': 'application/json',
+    },
+  });
+  const respJson = await resp.json();
+  const data = getReponseBody(respJson);
+  return data;
+};
+
+export const put = async (path: string, body: any) => {
+  console.log('PUT: ', apiBaseUrl + path);
+  console.log('body: ', body);
+
+  const resp = await fetch(apiBaseUrl + path, {
+    method: 'PUT',
+    mode: 'cors',
+    headers: {
+      Accept: 'application/json',
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+  const respJson = await resp.json();
+  const data = getReponseBody(respJson);
+  return data;
+};
+
+export const post = async (path: string, body: any) => {
+  console.log('PUT: ', apiBaseUrl + path);
+  console.log('body: ', body);
+
+  const resp = await fetch(apiBaseUrl + path, {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      Accept: 'application/json',
+      'Content-type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+  const respJson = await resp.json();
+  const data = getReponseBody(respJson);
+  return data;
+};
+
+export const del = async (path: string) => {
+  console.log('PUT: ', apiBaseUrl + path);
+
+  const resp = await fetch(apiBaseUrl + path, {
+    method: 'DELETE',
+    mode: 'cors',
+    headers: {
+      Accept: 'application/json',
+      'Content-type': 'application/json',
+    },
+  });
+  const respJson = await resp.json();
+  const data = getReponseBody(respJson);
+  return data;
 };
 
 const getReponseBody = (resp: any) => {
   switch (resp.status) {
-    case 200:
+    case 200: // ok
+    case 201: // created
       return resp.data;
+    case 204:
+      return true; // no content
+    case 404:
+      throw new Error('Not found');
+    case 500: // this is where we could maybe throw different kinds of errors to be caught in our sagas
+      throw new Error('Server error');
     default:
       return resp.data;
   }
