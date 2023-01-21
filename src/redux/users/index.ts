@@ -3,7 +3,7 @@ import {
   createSlice,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import { fetchActiveUser } from './thunks';
+import { fetchActiveUser, signIn, signOut } from './thunks';
 
 export type UserType = {
   id: string;
@@ -14,15 +14,19 @@ export type UserType = {
 
 interface UserState {
   activeUsers: UserType[] | null;
+  activeUser: UserType | null;
+  signInLoading: boolean;
 }
 
 export const usersAdapter = createEntityAdapter<UserType>();
 
 const initialState: UserState = {
   activeUsers: null,
+  activeUser: null,
+  signInLoading: false,
 };
 usersAdapter.getInitialState({
-  example: false,
+  signInLoading: false,
 });
 
 const usersSlice = createSlice({
@@ -42,6 +46,24 @@ const usersSlice = createSlice({
       state.activeUsers = action.payload;
     });
     builder.addCase(fetchActiveUser.rejected, state => {
+      console.log('FAILED');
+    });
+    builder.addCase(signIn.pending, state => {
+      state.signInLoading = true;
+    });
+    builder.addCase(signIn.fulfilled, (state, action) => {
+      console.log('SUCESS', action.payload);
+      state.activeUser = action.payload;
+      state.signInLoading = false;
+    });
+    builder.addCase(signIn.rejected, state => {
+      console.log('FAILED');
+      state.signInLoading = false;
+    });
+    builder.addCase(signOut.fulfilled, (state, action) => {
+      state.activeUser = null;
+    });
+    builder.addCase(signOut.rejected, state => {
       console.log('FAILED');
     });
   },

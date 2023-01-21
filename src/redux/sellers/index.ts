@@ -5,7 +5,7 @@ import {
   EntityState,
 } from '@reduxjs/toolkit';
 import { setLoading } from '../appState';
-import { RootState } from '..';
+import { RootState } from '../store';
 import { fetchSellers } from './thunks';
 
 export type SellerType = {

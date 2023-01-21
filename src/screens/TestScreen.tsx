@@ -1,20 +1,12 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
 import React, { useEffect, type PropsWithChildren } from 'react';
 import { ScrollView, Text, useColorScheme, StyleSheet, Image, View, ActivityIndicator, Dimensions } from 'react-native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { UserType } from 'redux/users';
 import $t from '../i18n';
-import { RootState, store, useAppDispatch } from '../redux';
-import { fetchActiveUser } from '../redux/users/thunks';
+import { RootState, store, useAppDispatch } from '../redux/store';
+import { fetchActiveUser, signOut } from '../redux/users/thunks';
+import PrimaryButton from '../components/buttons/PrimaryButton';
+import SecondaryButton from '../components/buttons/SecondaryButton';
 
 const styles = StyleSheet.create({
   pageContainer: {
@@ -45,20 +37,19 @@ const styles = StyleSheet.create({
   }
 })
 
-type TestProps = {
-  fontColor: string;
-};
-const App = ({ fontColor }: TestProps) => {
+
+type TestProps = {}
+
+const App = ({ }: TestProps) => {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? 'black' : 'white',
-  };
+  const color = !isDarkMode ? 'black' : 'white'
+
 
   const dispatch = useAppDispatch();
-  const users = useSelector((state: RootState) => state.users.activeUsers);
+  const user = useSelector((state: RootState) => state.users.activeUser);
   const loading = useSelector((state: RootState) => state.appState.loading);
-  console.log(users);
+  console.log(user);
   useEffect(() => {
     dispatch(fetchActiveUser());
   }, []);
@@ -70,7 +61,7 @@ const App = ({ fontColor }: TestProps) => {
           <ActivityIndicator />
           :
           <>
-            {users?.map((user: UserType) => (
+            {!!user && (
               <View key={user.id} style={styles.userContainer}>
                 <View style={styles.userInfo}>
                   <Text style={styles.labelText}>Id</Text>
@@ -88,8 +79,19 @@ const App = ({ fontColor }: TestProps) => {
                   <Text style={styles.labelText}>Last name</Text>
                   <Text>{user.last_name}</Text>
                 </View>
+                {!!user && (
+                  <Text style={{ color: color }}>
+                    Loaded from state: {user?.first_name}
+                  </Text>
+                )}
+                <Text style={{ color: color }}>
+                  {$t('helloWorld')}
+                </Text>
+                <PrimaryButton text="Test" onPress={() => console.log('Pressed')} />
+                <SecondaryButton text="Test" onPress={() => console.log('Pressed')} />
+                <PrimaryButton text="Sign Out" onPress={() => dispatch(signOut())} />
               </View>
-            ))}
+            )}
           </>
         }
       </View>

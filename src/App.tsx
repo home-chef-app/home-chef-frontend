@@ -10,33 +10,30 @@ import {
 import { Colors, Header } from 'react-native/Libraries/NewAppScreen';
 import TestScreen from './screens/TestScreen';
 import { Provider } from 'react-redux';
-import { store } from './redux';
+import { store } from './redux/store';
+import { NativeBaseProvider } from "native-base";
+import { theme } from './theme/nativeBaseTheme'
+import AppNavigator from './navigation/AppNavigator';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    flex: 1
   };
 
   return (
     <Provider store={store}>
-      <SafeAreaView style={backgroundStyle}>
-        <StatusBar
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-          backgroundColor={backgroundStyle.backgroundColor}
-        />
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={backgroundStyle}>
-          <View
-            style={{
-              backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            }}>
-            <TestScreen fontColor={isDarkMode ? Colors.white : Colors.black} />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+      <NativeBaseProvider theme={theme}>
+        <SafeAreaView style={backgroundStyle}>
+          <StatusBar
+            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+            backgroundColor={backgroundStyle.backgroundColor}
+          />
+          <AppNavigator />
+        </SafeAreaView>
+      </NativeBaseProvider>
     </Provider>
   );
 };

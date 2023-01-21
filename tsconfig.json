@@ -9,9 +9,13 @@
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
     "paths": {
       "screens/*": ["./src/screens/*"],
+      "services/*": ["./src/services/*"],
+      "components/*": ["./src/components/*"],
+      "navigation/*": ["./src/navigation/*"],
       "redux/*": ["./src/redux/*"],
-      "i18n/*": ["./src/i18n/*"]
+      "i18n/*": ["./src/i18n/*"],
+      "@src/*": ["src/*"],
     },
-    "baseUrl": ".",
+    "baseUrl": "."
   }
 }
