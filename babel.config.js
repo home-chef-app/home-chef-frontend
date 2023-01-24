@@ -1,5 +1,7 @@
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
+  presets: [
+    'module:metro-react-native-babel-preset'
+  ],
   plugins: [
     [
       'module-resolver',
@@ -19,7 +21,7 @@ module.exports = {
           navigation: './src/navigation',
           components: './src/components',
           services: './src/services',
-          redux: './src/redux',
+          store: './src/store',
           i18n: './src/i18n',
           '@src': './src',
         },

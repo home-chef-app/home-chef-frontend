@@ -1,10 +1,10 @@
 import React, { useEffect, type PropsWithChildren } from 'react';
 import { ScrollView, Text, useColorScheme, StyleSheet, Image, View, ActivityIndicator, Dimensions } from 'react-native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
-import { UserType } from 'redux/users';
+import { UserType } from 'store/users';
 import $t from '../i18n';
-import { RootState, store, useAppDispatch } from '../redux/store';
-import { fetchActiveUser, signOut } from '../redux/users/thunks';
+import { RootState, store, useAppDispatch } from '../store/store';
+import { fetchActiveUser, signOut } from '../store/users/thunks';
 import PrimaryButton from '../components/buttons/PrimaryButton';
 import SecondaryButton from '../components/buttons/SecondaryButton';
 
@@ -79,11 +79,6 @@ const App = ({ }: TestProps) => {
                   <Text style={styles.labelText}>Last name</Text>
                   <Text>{user.last_name}</Text>
                 </View>
-                {!!user && (
-                  <Text style={{ color: color }}>
-                    Loaded from state: {user?.first_name}
-                  </Text>
-                )}
                 <Text style={{ color: color }}>
                   {$t('helloWorld')}
                 </Text>

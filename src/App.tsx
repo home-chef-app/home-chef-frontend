@@ -10,10 +10,11 @@ import {
 import { Colors, Header } from 'react-native/Libraries/NewAppScreen';
 import TestScreen from './screens/TestScreen';
 import { Provider } from 'react-redux';
-import { store } from './redux/store';
+import { store } from './store/store';
 import { NativeBaseProvider } from "native-base";
 import { theme } from './theme/nativeBaseTheme'
 import AppNavigator from './navigation/AppNavigator';
+
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';

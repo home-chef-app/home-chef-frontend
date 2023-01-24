@@ -12,7 +12,7 @@
       "services/*": ["./src/services/*"],
       "components/*": ["./src/components/*"],
       "navigation/*": ["./src/navigation/*"],
-      "redux/*": ["./src/redux/*"],
+      "store/*": ["./src/store/*"],
       "i18n/*": ["./src/i18n/*"],
       "@src/*": ["src/*"],
     },
