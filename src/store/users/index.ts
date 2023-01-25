@@ -3,13 +3,19 @@ import {
   createSlice,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import { fetchActiveUser, signIn, signOut } from './thunks';
+import { signIn, signOut } from './thunks';
 
 export type UserType = {
   id: string;
-  email: string;
+  phone: string;
   first_name: string;
   last_name: string;
+  created_at: Date;
+  updated_at: Date;
+  cognito_sub: string;
+  id_token: any;
+  access_token: any;
+  refresh_token: any;
 };
 
 interface UserState {
@@ -38,21 +44,11 @@ const usersSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchActiveUser.pending, state => {
-      console.log('PENDING', state);
-    });
-    builder.addCase(fetchActiveUser.fulfilled, (state, action) => {
-      console.log('SUCESS', action.payload);
-      state.activeUsers = action.payload;
-    });
-    builder.addCase(fetchActiveUser.rejected, state => {
-      console.log('FAILED');
-    });
     builder.addCase(signIn.pending, state => {
       state.signInLoading = true;
     });
     builder.addCase(signIn.fulfilled, (state, action) => {
-      console.log('SUCESS', action.payload);
+      console.log('SING IN ', action.payload);
       state.activeUser = action.payload;
       state.signInLoading = false;
     });

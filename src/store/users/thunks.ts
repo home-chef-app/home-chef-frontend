@@ -7,17 +7,7 @@ import {
 import { setLoading } from '../appState';
 import { get, post } from '../../services/apiBaseService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-export const fetchActiveUser = createAsyncThunk(
-  'users/fetchActiveUser',
-  async (_, thunkAPI) => {
-    thunkAPI.dispatch(setLoading(true));
-    const res = await get('users');
-
-    thunkAPI.dispatch(setLoading(false));
-    return res;
-  },
-);
+import { UserType } from '.';
 
 type SignInParams = {
   username: string;
@@ -33,16 +23,12 @@ export const signIn = createAsyncThunk(
     // Call async API request
     await AsyncStorage.setItem('user_id', '123');
 
-    await post('users/signin', {
+    const result: UserType = await post('users/signin', {
       phone: '+19022130545',
       password: 'Homechef1',
     });
-    return {
-      first_name: 'Evan',
-      last_name: 'Larkin',
-      id: 'uuid',
-      email: 'elarkin@mail.com',
-    };
+    console.log('SIGN IN', result);
+    return result;
   },
 );
 

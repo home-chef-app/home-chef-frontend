@@ -1,10 +1,9 @@
-import React, { useEffect, type PropsWithChildren } from 'react';
-import { ScrollView, Text, useColorScheme, StyleSheet, Image, View, ActivityIndicator, Dimensions } from 'react-native';
-import { Provider, useDispatch, useSelector } from 'react-redux';
-import { UserType } from 'store/users';
+import React from 'react';
+import { Text, useColorScheme, StyleSheet, View, Dimensions } from 'react-native';
+import { useSelector } from 'react-redux';
 import $t from '../i18n';
-import { RootState, store, useAppDispatch } from '../store/store';
-import { fetchActiveUser, signOut } from '../store/users/thunks';
+import { RootState, useAppDispatch } from '../store/store';
+import { signOut } from '../store/users/thunks';
 import PrimaryButton from '../components/buttons/PrimaryButton';
 import SecondaryButton from '../components/buttons/SecondaryButton';
 
@@ -49,46 +48,40 @@ const App = ({ }: TestProps) => {
   const dispatch = useAppDispatch();
   const user = useSelector((state: RootState) => state.users.activeUser);
   const loading = useSelector((state: RootState) => state.appState.loading);
-  console.log(user);
-  useEffect(() => {
-    dispatch(fetchActiveUser());
-  }, []);
 
+  console.log("USER", user?.first_name, user?.phone)
   return (
     <>
       <View style={styles.pageContainer}>
-        {loading ?
-          <ActivityIndicator />
-          :
-          <>
-            {!!user && (
-              <View key={user.id} style={styles.userContainer}>
-                <View style={styles.userInfo}>
-                  <Text style={styles.labelText}>Id</Text>
-                  <Text>{user.id}</Text>
-                </View>
-                <View style={styles.userInfo}>
-                  <Text style={styles.labelText}>Email</Text>
-                  <Text>{user.email}</Text>
-                </View>
-                <View style={styles.userInfo}>
-                  <Text style={styles.labelText}>First name</Text>
-                  <Text>{user.first_name}</Text>
-                </View>
-                <View style={styles.userInfo}>
-                  <Text style={styles.labelText}>Last name</Text>
-                  <Text>{user.last_name}</Text>
-                </View>
-                <Text style={{ color: color }}>
-                  {$t('helloWorld')}
-                </Text>
-                <PrimaryButton text="Test" onPress={() => console.log('Pressed')} />
-                <SecondaryButton text="Test" onPress={() => console.log('Pressed')} />
-                <PrimaryButton text="Sign Out" onPress={() => dispatch(signOut())} />
+        <>
+          {!!user && (
+            <View key={user.id} style={styles.userContainer}>
+              <View style={styles.userInfo}>
+                <Text style={styles.labelText}>Id</Text>
+                <Text>{user.id}</Text>
               </View>
-            )}
-          </>
-        }
+              <View style={styles.userInfo}>
+                <Text style={styles.labelText}>Phone</Text>
+                <Text>{user.phone}</Text>
+              </View>
+              <View style={styles.userInfo}>
+                <Text style={styles.labelText}>First name</Text>
+                <Text>{user.first_name}</Text>
+              </View>
+              <View style={styles.userInfo}>
+                <Text style={styles.labelText}>Last name</Text>
+                <Text>{user.last_name}</Text>
+              </View>
+              <Text style={{ color: color }}>
+                {$t('helloWorld')}
+              </Text>
+              <PrimaryButton text="Test" onPress={() => console.log('Pressed')} />
+              <SecondaryButton text="Test" onPress={() => console.log('Pressed')} />
+              <PrimaryButton text="Sign Out" onPress={() => dispatch(signOut())} />
+            </View>
+          )}
+        </>
+
       </View>
     </>
   );
