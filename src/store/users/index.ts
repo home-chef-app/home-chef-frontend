@@ -46,6 +46,7 @@ const usersSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(signIn.pending, state => {
       state.signInLoading = true;
+      console.log('LOAGIN');
     });
     builder.addCase(signIn.fulfilled, (state, action) => {
       console.log('SING IN ', action.payload);

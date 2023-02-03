@@ -10,22 +10,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserType } from '.';
 
 type SignInParams = {
-  username: string;
+  phone: string;
   password: string;
 };
 export const signIn = createAsyncThunk(
   'users/signIn',
-  async ({ username, password }: SignInParams, thunkAPI) => {
+  async ({ phone, password }: SignInParams, thunkAPI) => {
     thunkAPI.dispatch(setLoading(true));
-    for (var i = 0; i < 10000; i++) {
-      //kill time
-    }
     // Call async API request
     await AsyncStorage.setItem('user_id', '123');
-
+    console.log('Signing in', phone, password);
     const result: UserType = await post('users/signin', {
-      phone: '+19022130545',
-      password: 'Homechef1',
+      phone,
+      password,
     });
     console.log('SIGN IN', result);
     return result;
