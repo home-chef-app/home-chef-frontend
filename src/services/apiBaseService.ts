@@ -38,7 +38,7 @@ export const put = async (path: string, body: any) => {
 };
 
 export const post = async (path: string, body: any) => {
-  console.log('PUT: ', apiBaseUrl + path);
+  console.log('POST: ', apiBaseUrl + path);
   console.log('body: ', body);
 
   const resp = await fetch(apiBaseUrl + path, {

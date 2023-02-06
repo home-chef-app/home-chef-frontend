@@ -3,7 +3,7 @@ import {
   createSlice,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import { signIn, signOut } from './thunks';
+import { signIn, createAccount, signOut, confirmAccount } from './thunks';
 
 export type UserType = {
   id: string;
@@ -46,15 +46,12 @@ const usersSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(signIn.pending, state => {
       state.signInLoading = true;
-      console.log('LOAGIN');
     });
     builder.addCase(signIn.fulfilled, (state, action) => {
-      console.log('SING IN ', action.payload);
       state.activeUser = action.payload;
       state.signInLoading = false;
     });
     builder.addCase(signIn.rejected, state => {
-      console.log('FAILED');
       state.signInLoading = false;
     });
     builder.addCase(signOut.fulfilled, (state, action) => {
@@ -62,6 +59,25 @@ const usersSlice = createSlice({
     });
     builder.addCase(signOut.rejected, state => {
       console.log('FAILED');
+    });
+    builder.addCase(createAccount.pending, state => {
+      state.signInLoading = true;
+    });
+    builder.addCase(createAccount.fulfilled, (state, action) => {
+      state.signInLoading = false;
+    });
+    builder.addCase(createAccount.rejected, state => {
+      state.signInLoading = false;
+    });
+    builder.addCase(confirmAccount.pending, state => {
+      state.signInLoading = true;
+    });
+    builder.addCase(confirmAccount.fulfilled, (state, action) => {
+      state.signInLoading = false;
+      state.activeUser = action.payload;
+    });
+    builder.addCase(confirmAccount.rejected, state => {
+      state.signInLoading = false;
     });
   },
 });

@@ -5,7 +5,10 @@ export const isMountedRef: any = React.createRef();
 export const navigationRef: any = React.createRef();
 
 export function navigate(name: string, params?: any, attempt = 0) {
-  if (isMountedRef.current && navigationRef.current) {
+  //isMountedRef logging as null, I removed from the conditional below and it is
+  //working, just noting so I remember to discuss when we meet next
+  //Cormac, Feb 5, 2023
+  if (navigationRef.current) {
     // Perform navigation if the app has mounted
     navigationRef.current.navigate(name, params);
   } else {
