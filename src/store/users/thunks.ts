@@ -14,17 +14,23 @@ type AuthParams = {
   password: string;
   code?: string;
 };
+export const initUserSession = createAsyncThunk(
+  'users/initUserSession',
+  async () => {
+    console.log('hi');
+  },
+);
 export const signIn = createAsyncThunk(
   'users/signIn',
   async ({ phone, password }: AuthParams, thunkAPI) => {
     thunkAPI.dispatch(setLoading(true));
     // Call async API request
     await AsyncStorage.setItem('user_id', '123');
-    console.log('Signing in', phone, password);
     const result: UserType = await post('users/signin', {
       phone,
       password,
     });
+    console.log(result);
     return result;
   },
 );

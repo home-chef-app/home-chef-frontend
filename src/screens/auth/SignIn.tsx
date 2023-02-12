@@ -14,7 +14,7 @@ import { navigate } from '../../services/NavigationService';
 
 const SignInScreen = () => {
   const dispatch = useAppDispatch();
-  const isLoading = useSelector((state: RootState) => state.users.signInLoading);
+  const isLoading = useSelector((state: RootState) => state.users.userLoading);
 
 
   const [phone, setPhone] = React.useState("");

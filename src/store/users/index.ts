@@ -21,7 +21,7 @@ export type UserType = {
 interface UserState {
   activeUsers: UserType[] | null;
   activeUser: UserType | null;
-  signInLoading: boolean;
+  userLoading: boolean;
 }
 
 export const usersAdapter = createEntityAdapter<UserType>();
@@ -29,10 +29,10 @@ export const usersAdapter = createEntityAdapter<UserType>();
 const initialState: UserState = {
   activeUsers: null,
   activeUser: null,
-  signInLoading: false,
+  userLoading: false,
 };
 usersAdapter.getInitialState({
-  signInLoading: false,
+  userLoading: false,
 });
 
 const usersSlice = createSlice({
@@ -45,14 +45,15 @@ const usersSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(signIn.pending, state => {
-      state.signInLoading = true;
+      state.userLoading = true;
     });
     builder.addCase(signIn.fulfilled, (state, action) => {
       state.activeUser = action.payload;
-      state.signInLoading = false;
+      state.userLoading = false;
     });
     builder.addCase(signIn.rejected, state => {
-      state.signInLoading = false;
+      console.log('hi');
+      state.userLoading = false;
     });
     builder.addCase(signOut.fulfilled, (state, action) => {
       state.activeUser = null;
@@ -61,23 +62,23 @@ const usersSlice = createSlice({
       console.log('FAILED');
     });
     builder.addCase(createAccount.pending, state => {
-      state.signInLoading = true;
+      state.userLoading = true;
     });
     builder.addCase(createAccount.fulfilled, (state, action) => {
-      state.signInLoading = false;
+      state.userLoading = false;
     });
     builder.addCase(createAccount.rejected, state => {
-      state.signInLoading = false;
+      state.userLoading = false;
     });
     builder.addCase(confirmAccount.pending, state => {
-      state.signInLoading = true;
+      state.userLoading = true;
     });
     builder.addCase(confirmAccount.fulfilled, (state, action) => {
-      state.signInLoading = false;
+      state.userLoading = false;
       state.activeUser = action.payload;
     });
     builder.addCase(confirmAccount.rejected, state => {
-      state.signInLoading = false;
+      state.userLoading = false;
     });
   },
 });
