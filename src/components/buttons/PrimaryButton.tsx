@@ -22,6 +22,7 @@ type PrimaryButtonProps = {
 
 const PrimaryButton = (props: PrimaryButtonProps) => {
   const { text, isDisabled, isLoading, variant = 'solid', ...buttonProps } = props;
+  console.log(isLoading ?? isDisabled);
   return (
     <Button
       variant={variant}
@@ -30,7 +31,7 @@ const PrimaryButton = (props: PrimaryButtonProps) => {
       bg={'primary.400'}
       _text={{ color: 'white' }}
       isLoading={isLoading}
-      isDisabled={isLoading ?? isDisabled}
+      isDisabled={isDisabled}
       {
       ...buttonProps
       }

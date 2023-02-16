@@ -3,7 +3,14 @@ import {
   createSlice,
   PayloadAction,
 } from '@reduxjs/toolkit';
-import { signIn, createAccount, signOut, confirmAccount } from './thunks';
+import print from '@src/utils';
+import {
+  signIn,
+  createAccount,
+  signOut,
+  confirmAccount,
+  initUserSession,
+} from './thunks';
 
 export type UserType = {
   id: string;
@@ -39,8 +46,9 @@ const usersSlice = createSlice({
   name: 'users',
   initialState,
   reducers: {
-    setActiveUser(state, action: PayloadAction<UserType[]>) {
-      state.activeUsers = action.payload;
+    setActiveUser(state, action: PayloadAction<UserType>) {
+      console.log('FROM REDUCER', action.payload);
+      state.activeUser = action.payload;
     },
   },
   extraReducers: builder => {
@@ -80,9 +88,21 @@ const usersSlice = createSlice({
     builder.addCase(confirmAccount.rejected, state => {
       state.userLoading = false;
     });
+    builder.addCase(initUserSession.pending, state => {
+      state.userLoading = true;
+    });
+    builder.addCase(initUserSession.fulfilled, (state, action) => {
+      state.userLoading = false;
+      state.activeUser = action.payload!;
+    });
+    builder.addCase(initUserSession.rejected, state => {
+      print('REJECTED');
+      state.userLoading = false;
+    });
   },
 });
 
+export const { setActiveUser } = usersSlice.actions;
 export default usersSlice.reducer;
 
 /*

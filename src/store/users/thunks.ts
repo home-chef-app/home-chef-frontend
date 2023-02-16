@@ -7,7 +7,9 @@ import {
 import { setLoading } from '../appState';
 import { get, post } from '../../services/apiBaseService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserType } from '.';
+import { setActiveUser, UserType } from '.';
+import print from '@src/utils';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 type AuthParams = {
   phone: string;
@@ -16,8 +18,14 @@ type AuthParams = {
 };
 export const initUserSession = createAsyncThunk(
   'users/initUserSession',
-  async () => {
-    console.log('hi');
+  async (_, thunkAPI) => {
+    const userString = await EncryptedStorage.getItem('userSession');
+    if (userString) {
+      const user = JSON.parse(userString) as UserType;
+      // thunkAPI.dispatch(setActiveUser(user));
+      return user;
+    }
+    thunkAPI.rejectWithValue(null);
   },
 );
 export const signIn = createAsyncThunk(
@@ -25,12 +33,17 @@ export const signIn = createAsyncThunk(
   async ({ phone, password }: AuthParams, thunkAPI) => {
     thunkAPI.dispatch(setLoading(true));
     // Call async API request
-    await AsyncStorage.setItem('user_id', '123');
     const result: UserType = await post('users/signin', {
       phone,
       password,
     });
     console.log(result);
+    await EncryptedStorage.setItem(
+      'userSession',
+      JSON.stringify({
+        ...result,
+      }),
+    );
     return result;
   },
 );
@@ -74,8 +87,7 @@ export const signOut = createAsyncThunk(
   'users/signOut',
   async (_, thunkAPI) => {
     thunkAPI.dispatch(setLoading(true));
-    await AsyncStorage.setItem('user_id', '');
-    // Call async API request
+    await EncryptedStorage.removeItem('userSession');
     return true;
   },
 );

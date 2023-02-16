@@ -1,6 +1,7 @@
 import { Input, View } from 'native-base';
 import { ThemeComponentSizeType } from 'native-base/lib/typescript/components/types';
 import React from 'react';
+import { KeyboardTypeOptions } from 'react-native';
 
 type HCTextFieldProps = {
   size?: ThemeComponentSizeType<"Input">;
@@ -8,6 +9,7 @@ type HCTextFieldProps = {
   isFullWidth?: boolean;
   value?: string;
   type?: "text" | "password";
+  keyboardType?: KeyboardTypeOptions | undefined;
   onChangeText?: (value: string) => void;
 }
 
