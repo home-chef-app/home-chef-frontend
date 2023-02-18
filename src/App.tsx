@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  SafeAreaView,
   StatusBar,
   StyleSheet,
   useColorScheme,
@@ -14,7 +13,7 @@ import { store } from './store/store';
 import { NativeBaseProvider } from "native-base";
 import { theme } from './theme/nativeBaseTheme'
 import AppNavigator from './navigation/AppNavigator';
-
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -27,13 +26,13 @@ const App = () => {
   return (
     <Provider store={store}>
       <NativeBaseProvider theme={theme}>
-        <SafeAreaView style={backgroundStyle}>
+        <SafeAreaProvider style={backgroundStyle} >
           <StatusBar
             barStyle={isDarkMode ? 'light-content' : 'dark-content'}
             backgroundColor={backgroundStyle.backgroundColor}
           />
           <AppNavigator />
-        </SafeAreaView>
+        </SafeAreaProvider>
       </NativeBaseProvider>
     </Provider>
   );

@@ -9,6 +9,7 @@
     "skipLibCheck": true,                                 /* Skip type checking all .d.ts files. */
     "paths": {
       "screens/*": ["./src/screens/*"],
+      "theme/*": ["./src/theme/*"],
       "services/*": ["./src/services/*"],
       "components/*": ["./src/components/*"],
       "navigation/*": ["./src/navigation/*"],

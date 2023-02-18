@@ -49,7 +49,6 @@ const App = ({ }: TestProps) => {
   const user = useSelector((state: RootState) => state.users.activeUser);
   const loading = useSelector((state: RootState) => state.appState.loading);
 
-  console.log("USER", user?.first_name, user?.phone)
   return (
     <>
       <View style={styles.pageContainer}>
