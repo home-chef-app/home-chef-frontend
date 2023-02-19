@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TestScreen from '../screens/TestScreen';
+import MapScreen from '../screens/MapScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { colors } from '../theme/colors';
 
@@ -42,7 +43,7 @@ function HomeTabs() {
         />
         <Tab.Screen
           name="History"
-          component={TestScreen}
+          component={MapScreen}
         />
       </Tab.Navigator>
 

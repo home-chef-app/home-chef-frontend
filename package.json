@@ -24,6 +24,7 @@
     "react-native-config": "^1.4.12",
     "react-native-encrypted-storage": "^4.0.3",
     "react-native-localize": "^2.2.4",
+    "react-native-maps": "^1.4.0",
     "react-native-safe-area-context": "^3.4.1",
     "react-native-screens": "^3.18.2",
     "react-native-svg": "^12.1.1",
