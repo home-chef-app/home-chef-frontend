@@ -4,7 +4,7 @@ const apiBaseUrl = `${config.API_BASE_URL}/${config.STAGE}/${config.API_VERSION}
 
 // Helper class to make all requests to our api. We can customize as we find a cadence for how we hit our api.
 // No try/catch blocks is intentional, this way we can catch all errors in redux and handle appropriately. Cormac, 2023-01-19
-export const get = async (path: string, body: any) => {
+export const get = async (path: string) => {
   console.log('GET: ', apiBaseUrl + path);
   const resp = await fetch(apiBaseUrl + path, {
     method: 'GET',
