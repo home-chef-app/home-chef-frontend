@@ -5,11 +5,12 @@ import {
   EntityState,
 } from '@reduxjs/toolkit';
 import { setLoading } from '../appState';
-import { get, post } from '../../services/apiBaseService';
+import { get, post, put } from '../../services/apiBaseService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setActiveUser, UserType } from '.';
 import print from '@src/utils';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import jwt_decode from 'jwt-decode';
 
 type AuthParams = {
   phone: string;
@@ -21,8 +22,34 @@ export const initUserSession = createAsyncThunk(
   async (_, thunkAPI) => {
     const userString = await EncryptedStorage.getItem('userSession');
     if (userString) {
-      const user = JSON.parse(userString) as UserType;
-      // thunkAPI.dispatch(setActiveUser(user));
+      const user = JSON.parse(userString);
+      const {
+        accessToken: { jwtToken },
+        refreshToken: { token },
+        phone,
+      } = user;
+      const { exp: tokenExpirationDate } = jwt_decode(jwtToken) as any;
+      const now = Math.round(new Date().getTime() / 1000);
+      if (now > tokenExpirationDate) {
+        print('TOKEN IS EXPIRED, REFRESHING');
+        // TODO hit new endpoint with refresh token to get new accessToken
+        const response = await put('users/refreshIdToken', {
+          phone,
+          refreshToken: token,
+        });
+
+        const { result: idToken } = response;
+        await EncryptedStorage.setItem(
+          'userSession',
+          JSON.stringify({
+            ...user,
+            accessToken: {
+              jwtToken: idToken,
+            },
+          }),
+        );
+        print('TOKEN REFRESHED');
+      }
       return user;
     }
     thunkAPI.rejectWithValue(null);
@@ -37,7 +64,6 @@ export const signIn = createAsyncThunk(
       phone,
       password,
     });
-    console.log(result);
     await EncryptedStorage.setItem(
       'userSession',
       JSON.stringify({
