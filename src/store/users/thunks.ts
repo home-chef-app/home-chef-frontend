@@ -4,10 +4,10 @@ import {
   createSlice,
   EntityState,
 } from '@reduxjs/toolkit';
-import { setLoading } from '../appState';
-import { get, post, put } from '../../services/apiBaseService';
+import {setLoading} from '../appState';
+import {get, post, put} from '../../services/apiBaseService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setActiveUser, UserType } from '.';
+import {setActiveUser, UserType} from '.';
 import print from '@src/utils';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import jwt_decode from 'jwt-decode';
@@ -24,11 +24,11 @@ export const initUserSession = createAsyncThunk(
     if (userString) {
       const user = JSON.parse(userString);
       const {
-        accessToken: { jwtToken },
-        refreshToken: { token },
+        accessToken: {jwtToken},
+        refreshToken: {token},
         phone,
       } = user;
-      const { exp: tokenExpirationDate } = jwt_decode(jwtToken) as any;
+      const {exp: tokenExpirationDate} = jwt_decode(jwtToken) as any;
       const now = Math.round(new Date().getTime() / 1000);
       if (now > tokenExpirationDate) {
         print('TOKEN IS EXPIRED, REFRESHING');
@@ -38,7 +38,7 @@ export const initUserSession = createAsyncThunk(
           refreshToken: token,
         });
 
-        const { result: idToken } = response;
+        const {result: idToken} = response;
         await EncryptedStorage.setItem(
           'userSession',
           JSON.stringify({
@@ -57,7 +57,7 @@ export const initUserSession = createAsyncThunk(
 );
 export const signIn = createAsyncThunk(
   'users/signIn',
-  async ({ phone, password }: AuthParams, thunkAPI) => {
+  async ({phone, password}: AuthParams, thunkAPI) => {
     thunkAPI.dispatch(setLoading(true));
     // Call async API request
     const result: UserType = await post('users/signin', {
@@ -76,7 +76,7 @@ export const signIn = createAsyncThunk(
 
 export const createAccount = createAsyncThunk(
   'users/createAccount',
-  async ({ phone, password }: AuthParams, thunkAPI) => {
+  async ({phone, password}: AuthParams, thunkAPI) => {
     // Call async API request
     console.log('create account:', phone, password);
     await AsyncStorage.setItem('user_id', '123');
@@ -92,7 +92,7 @@ export const createAccount = createAsyncThunk(
 
 export const confirmAccount = createAsyncThunk(
   'users/confirmAccount',
-  async ({ phone, password, code }: AuthParams, thunkAPI) => {
+  async ({phone, password, code}: AuthParams, thunkAPI) => {
     // Call async API request
     console.log('confirm account:', phone, password, code);
     await AsyncStorage.setItem('user_id', '123');
