@@ -18,13 +18,13 @@ import { useForm, Controller } from "react-hook-form";
 const SignInScreen = () => {
   const dispatch = useAppDispatch();
   const isLoading = useSelector((state: RootState) => state.users.userLoading);
-
+  console.log(isLoading)
   const schema = yup.object({
     phone: yup.string().min(10).required(),
     password: yup.string().min(8).required(),
   });
 
-  const { control, handleSubmit, formState: { errors, isValid } } = useForm({
+  const { control, handleSubmit, getValues, formState: { errors, isValid } } = useForm({
     resolver: yupResolver(schema)
   });
 
@@ -85,7 +85,7 @@ const SignInScreen = () => {
       <View style={{ flex: 1 }} />
       <PrimaryButton
         text="Sign In"
-        isLoading={isLoading}
+        isLoading={false}
         isDisabled={!isValid}
         onPress={handleSubmit(onSubmit)} />
       <Button style={{ marginTop: 10, alignSelf: 'center' }} variant='link' onPress={() => navigate('Create Account')}>Create account page</Button>

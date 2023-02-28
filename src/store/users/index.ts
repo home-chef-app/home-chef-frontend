@@ -29,6 +29,7 @@ interface UserState {
   activeUsers: UserType[] | null;
   activeUser: UserType | null;
   userLoading: boolean;
+  userLoc: null | {lat: number; lng: number};
 }
 
 export const usersAdapter = createEntityAdapter<UserType>();
@@ -37,6 +38,7 @@ const initialState: UserState = {
   activeUsers: null,
   activeUser: null,
   userLoading: false,
+  userLoc: null,
 };
 usersAdapter.getInitialState({
   userLoading: false,
@@ -49,6 +51,12 @@ const usersSlice = createSlice({
     setActiveUser(state, action: PayloadAction<UserType>) {
       console.log('FROM REDUCER', action.payload);
       state.activeUser = action.payload;
+    },
+    setUserLoc(
+      state,
+      action: PayloadAction<null | {lat: number; lng: number}>,
+    ) {
+      state.userLoc = action.payload;
     },
   },
   extraReducers: builder => {
@@ -102,7 +110,7 @@ const usersSlice = createSlice({
   },
 });
 
-export const { setActiveUser } = usersSlice.actions;
+export const {setActiveUser, setUserLoc} = usersSlice.actions;
 export default usersSlice.reducer;
 
 /*

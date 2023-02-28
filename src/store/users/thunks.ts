@@ -50,8 +50,10 @@ export const initUserSession = createAsyncThunk(
         );
         print('TOKEN REFRESHED');
       }
+      console.log(user);
       return user;
     }
+    console.log('Null');
     thunkAPI.rejectWithValue(null);
   },
 );
@@ -64,6 +66,7 @@ export const signIn = createAsyncThunk(
       phone,
       password,
     });
+    console.log(result);
     await EncryptedStorage.setItem(
       'userSession',
       JSON.stringify({
