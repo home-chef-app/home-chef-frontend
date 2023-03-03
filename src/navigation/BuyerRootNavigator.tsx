@@ -15,7 +15,6 @@ function BuyerRootNavigator() {
   const dispatch = useDispatch()
   useEffect(() => {
     initBuyerSession().finally(() => { setLoading(false) })
-
   }, [])
 
   const initBuyerSession = async () => {
@@ -33,13 +32,13 @@ function BuyerRootNavigator() {
 
   return (
     <>
-      {loading ? (<Spinner />) : (<RootStack.Navigator>
+      <RootStack.Navigator>
         <RootStack.Screen
           name="BuyerHome"
           component={HomeTabs}
           options={{ headerShown: false }}
         />
-      </RootStack.Navigator>)}
+      </RootStack.Navigator>
 
     </>
   );
