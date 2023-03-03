@@ -85,7 +85,7 @@ const SignInScreen = () => {
       <View style={{ flex: 1 }} />
       <PrimaryButton
         text="Sign In"
-        isLoading={false}
+        isLoading={isLoading}
         isDisabled={!isValid}
         onPress={handleSubmit(onSubmit)} />
       <Button style={{ marginTop: 10, alignSelf: 'center' }} variant='link' onPress={() => navigate('Create Account')}>Create account page</Button>
