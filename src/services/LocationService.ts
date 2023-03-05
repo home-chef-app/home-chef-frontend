@@ -1,6 +1,8 @@
+import print from '@src/utils';
 import Geolocation from 'react-native-geolocation-service';
 
 export function currentLocationCoordinates() {
+  print('fetching location');
   return new Promise(function (resolve, reject) {
     Geolocation.getCurrentPosition(
       position => {

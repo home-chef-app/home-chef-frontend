@@ -6,6 +6,7 @@ import { RootState, useAppDispatch } from '../store/store';
 import { signOut } from '../store/users/thunks';
 import PrimaryButton from '../components/buttons/PrimaryButton';
 import SecondaryButton from '../components/buttons/SecondaryButton';
+import { get } from 'services/apiBaseService';
 
 const styles = StyleSheet.create({
   pageContainer: {
@@ -47,7 +48,17 @@ const App = ({ }: TestProps) => {
 
   const dispatch = useAppDispatch();
   const user = useSelector((state: RootState) => state.users.activeUser);
-  const loading = useSelector((state: RootState) => state.appState.loading);
+
+  const testAuthToken = async () => {
+    try {
+      const u: any = user as any;
+      const result = await get('tokenTest', u?.accessToken.jwtToken);
+      console.log(result);
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <>
@@ -74,8 +85,7 @@ const App = ({ }: TestProps) => {
               <Text style={{ color: color }}>
                 {$t('helloWorld')}
               </Text>
-              <PrimaryButton text="Test" onPress={() => console.log('Pressed')} />
-              <SecondaryButton text="Test" onPress={() => console.log('Pressed')} />
+              <PrimaryButton text="Test access token" onPress={() => testAuthToken()} />
               <PrimaryButton text="Sign Out" onPress={() => dispatch(signOut())} />
             </View>
           )}

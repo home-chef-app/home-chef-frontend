@@ -66,9 +66,10 @@ const usersSlice = createSlice({
     builder.addCase(signIn.fulfilled, (state, action) => {
       state.activeUser = action.payload;
       state.userLoading = false;
+      print('login success');
     });
     builder.addCase(signIn.rejected, state => {
-      console.log('hi');
+      console.log('ERROR');
       state.userLoading = false;
     });
     builder.addCase(signOut.fulfilled, (state, action) => {

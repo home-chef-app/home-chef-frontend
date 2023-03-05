@@ -1,17 +1,27 @@
+import {useSelector} from 'react-redux';
+import {RootState} from 'store/store';
 import config from '../config';
 
 const apiBaseUrl = `${config.API_BASE_URL}/${config.STAGE}/${config.API_VERSION}/`;
 
+const getAccessToken = () => {
+  const activeUser = useSelector((state: RootState) => state.users.activeUser);
+  return activeUser?.access_token ?? '';
+};
+
 // Helper class to make all requests to our api. We can customize as we find a cadence for how we hit our api.
 // No try/catch blocks is intentional, this way we can catch all errors in redux and handle appropriately. Cormac, 2023-01-19
-export const get = async (path: string) => {
+export const get = async (path: string, token?: string) => {
   console.log('GET: ', apiBaseUrl + path);
+  console.log(token);
+  // const token = getAccessToken();
   const resp = await fetch(apiBaseUrl + path, {
     method: 'GET',
     mode: 'cors',
     headers: {
       Accept: 'application/json',
       'Content-type': 'application/json',
+      Authorization: `Bearer ${token ?? ''}`,
     },
   });
   const respJson = await resp.json();
