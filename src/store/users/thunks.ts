@@ -66,13 +66,14 @@ export const signIn = createAsyncThunk(
       phone,
       password,
     });
-    console.log(result);
+    print('sign in success');
     await EncryptedStorage.setItem(
       'userSession',
       JSON.stringify({
         ...result,
       }),
     );
+    print('user saved to storage');
     return result;
   },
 );
