@@ -26,7 +26,6 @@ export type UserType = {
 };
 
 interface UserState {
-  activeUsers: UserType[] | null;
   activeUser: UserType | null;
   userLoading: boolean;
   userLoc: null | {lat: number; lng: number};
@@ -35,7 +34,6 @@ interface UserState {
 export const usersAdapter = createEntityAdapter<UserType>();
 
 const initialState: UserState = {
-  activeUsers: null,
   activeUser: null,
   userLoading: false,
   userLoc: null,
@@ -49,7 +47,6 @@ const usersSlice = createSlice({
   initialState,
   reducers: {
     setActiveUser(state, action: PayloadAction<UserType>) {
-      console.log('FROM REDUCER', action.payload);
       state.activeUser = action.payload;
     },
     setUserLoc(
@@ -68,7 +65,6 @@ const usersSlice = createSlice({
       state.userLoading = false;
     });
     builder.addCase(signIn.rejected, state => {
-      console.log('hi');
       state.userLoading = false;
     });
     builder.addCase(signOut.fulfilled, (state, action) => {
