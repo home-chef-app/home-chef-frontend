@@ -6,7 +6,7 @@ import { RootState, useAppDispatch } from '../store/store';
 import { signOut } from '../store/users/thunks';
 import PrimaryButton from '../components/buttons/PrimaryButton';
 import SecondaryButton from '../components/buttons/SecondaryButton';
-import { get } from 'services/apiBaseService';
+import { get } from 'services/ApiBaseService';
 
 const styles = StyleSheet.create({
   pageContainer: {
@@ -51,8 +51,7 @@ const App = ({ }: TestProps) => {
 
   const testAuthToken = async () => {
     try {
-      const u: any = user as any;
-      const result = await get('tokenTest', u?.accessToken.jwtToken);
+      const result = await get('tokenTest');
       console.log(result);
 
     } catch (e) {

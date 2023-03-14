@@ -1,81 +1,139 @@
-import {useSelector} from 'react-redux';
-import {RootState} from 'store/store';
 import config from '../config';
+import {store} from 'store/store';
+import print from '@src/utils';
+import {refreshAccessToken} from './AuthService';
+import {setUserAccessToken} from 'store/users';
 
 const apiBaseUrl = `${config.API_BASE_URL}/${config.STAGE}/${config.API_VERSION}/`;
 
 const getAccessToken = () => {
-  const activeUser = useSelector((state: RootState) => state.users.activeUser);
-  return activeUser?.access_token ?? '';
+  const token = store.getState().users.activeUser?.access_token;
+  if (!token) throw new Error('No access token');
+  return token;
+};
+
+const tryRefreshToken = async () => {
+  const user = store.getState().users.activeUser;
+  if (!user) throw new Error('No user in state');
+  const {phone, refresh_token} = user;
+  console.log('403, refreshing token');
+  const token = await refreshAccessToken(phone, refresh_token);
+  if (!token) {
+    // I dont think this is possible, but put incase
+    throw new Error('Unauthorized');
+  }
+  store.dispatch(setUserAccessToken(token));
+  return token;
 };
 
 // Helper class to make all requests to our api. We can customize as we find a cadence for how we hit our api.
 // No try/catch blocks is intentional, this way we can catch all errors in redux and handle appropriately. Cormac, 2023-01-19
-export const get = async (path: string, token?: string) => {
-  console.log('GET: ', apiBaseUrl + path);
-  console.log(token);
-  // const token = getAccessToken();
+export const get = async (path: string, retries = 0, useToken = true) => {
+  if (retries > 1) throw new Error('Could not refresh access token'); //refreshing token did not work
+  console.log('GET: ', apiBaseUrl + path, retries);
+  let token;
+  if (useToken) token = getAccessToken();
   const resp = await fetch(apiBaseUrl + path, {
     method: 'GET',
     mode: 'cors',
     headers: {
       Accept: 'application/json',
       'Content-type': 'application/json',
-      Authorization: `Bearer ${token ?? ''}`,
+      ...(useToken && {Authorization: `Bearer ${token ?? ''}`}),
     },
   });
   const respJson = await resp.json();
   const data = getReponseBody(respJson);
+  if (!data) {
+    // 403 response so retry with new token, will throw error if it fails
+    await tryRefreshToken();
+    await get(path, retries + 1);
+  }
   return data;
 };
 
-export const put = async (path: string, body: any) => {
-  console.log('PUT: ', apiBaseUrl + path);
+export const put = async (
+  path: string,
+  body: any,
+  retries = 0,
+  useToken = true,
+) => {
+  if (retries > 1) throw new Error('Could not refresh access token');
+  console.log('PUT: ', apiBaseUrl + path, retries);
+  let token;
+  if (useToken) token = getAccessToken();
   const resp = await fetch(apiBaseUrl + path, {
     method: 'PUT',
     mode: 'cors',
     headers: {
       Accept: 'application/json',
       'Content-type': 'application/json',
+      ...(useToken && {Authorization: `Bearer ${token ?? ''}`}),
     },
     body: JSON.stringify(body),
   });
   const respJson = await resp.json();
   const data = getReponseBody(respJson);
+  if (!data) {
+    // 403 response so retry with new token, will throw error if it fails
+    await tryRefreshToken();
+    await put(path, body, retries + 1);
+  }
   return data;
 };
 
-export const post = async (path: string, body: any) => {
-  console.log('POST: ', apiBaseUrl + path);
+export const post = async (
+  path: string,
+  body: any,
+  retries = 0,
+  useToken = true,
+) => {
+  if (retries > 1) throw new Error('Could not refresh access token');
+  console.log('POST: ', apiBaseUrl + path, retries);
   console.log('body: ', body);
-
+  let token;
+  if (useToken) token = getAccessToken();
   const resp = await fetch(apiBaseUrl + path, {
     method: 'POST',
     mode: 'cors',
     headers: {
       Accept: 'application/json',
       'Content-type': 'application/json',
+      ...(useToken && {Authorization: `Bearer ${token ?? ''}`}),
     },
     body: JSON.stringify(body),
   });
   const respJson = await resp.json();
   const data = getReponseBody(respJson);
+  if (!data) {
+    // 403 response so retry with new token, will throw error if it fails
+    await tryRefreshToken();
+    await post(path, body, retries + 1);
+  }
   return data;
 };
 
-export const del = async (path: string) => {
-  console.log('PUT: ', apiBaseUrl + path);
-
+export const del = async (path: string, retries = 0, useToken = true) => {
+  if (retries > 1) throw new Error('Could not refresh access token');
+  console.log('PUT: ', apiBaseUrl + path, retries);
+  let token;
+  if (useToken) token = getAccessToken();
   const resp = await fetch(apiBaseUrl + path, {
     method: 'DELETE',
     mode: 'cors',
     headers: {
       Accept: 'application/json',
       'Content-type': 'application/json',
+      ...(useToken && {Authorization: `Bearer ${token ?? ''}`}),
     },
   });
   const respJson = await resp.json();
   const data = getReponseBody(respJson);
+  if (!data) {
+    // 403 response so retry with new token, will throw error if it fails
+    await tryRefreshToken();
+    await del(path, retries + 1);
+  }
   return data;
 };
 
@@ -89,6 +147,8 @@ const getReponseBody = (resp: any) => {
       return resp.data;
     case 204:
       return true; // no content
+    case 403:
+      return false; // unauthorized
     case 404: // this is where we could maybe throw different kinds of errors to be caught in our sagas
       throw new Error('Not found');
     case 500:

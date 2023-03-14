@@ -18,7 +18,6 @@ import { useForm, Controller } from "react-hook-form";
 const SignInScreen = () => {
   const dispatch = useAppDispatch();
   const isLoading = useSelector((state: RootState) => state.users.userLoading);
-  console.log(isLoading)
   const schema = yup.object({
     phone: yup.string().min(10).required(),
     password: yup.string().min(8).required(),
