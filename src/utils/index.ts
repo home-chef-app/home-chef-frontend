@@ -1,3 +1,3 @@
-const { log: print } = console;
+const {log: print} = console;
 
 export default print;

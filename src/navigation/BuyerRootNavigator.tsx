@@ -3,28 +3,32 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeTabs from './BuyerHomeTabs';
 import { checkLocationPermissions } from 'services/PermissionService';
 import { currentLocationCoordinates } from 'services/LocationService';
-import { useDispatch } from 'react-redux';
 import { setUserLoc } from 'store/users';
 import Spinner from 'components/common/FullPageLoader';
+import { fetchSellers } from 'store/sellers/thunks';
+import { useAppDispatch } from 'store/store';
 const RootStack = createNativeStackNavigator();
 
 
 
 function BuyerRootNavigator() {
   const [loading, setLoading] = useState(true)
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch();
   useEffect(() => {
     initBuyerSession().finally(() => { setLoading(false) })
   }, [])
 
   const initBuyerSession = async () => {
     try {
+      //Fetch location
       await checkLocationPermissions()
       const result: any = await currentLocationCoordinates()
       if (result) {
-        console.log(result.coords)
         dispatch(setUserLoc({ lat: result.coords.latitude, lng: result.coords.longitude }))
       }
+
+      //Fetch sellers
+      dispatch(fetchSellers())
     } catch (e) {
       console.log(e)
     }

@@ -4,15 +4,15 @@ import {
   createSlice,
   EntityState,
 } from '@reduxjs/toolkit';
-import { setLoading } from '../appState';
-import { RootState } from '../store';
-import { fetchSellers } from './thunks';
+import {setLoading} from '../appState';
+import {RootState} from '../store';
+import {fetchSellers} from './thunks';
 
 export type SellerType = {
   id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
+  name: string;
+  description: string;
+  location: any;
 };
 
 interface AdditionalSellerState {
@@ -36,7 +36,6 @@ const sellersSlice = createSlice({
     });
     builder.addCase(fetchSellers.fulfilled, (state, action) => {
       SellersAdapter.setAll(state, action.payload);
-      console.log('SUCCUESS');
     });
     builder.addCase(fetchSellers.rejected, state => {
       console.log('FAILED');
