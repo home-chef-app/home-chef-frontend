@@ -9,7 +9,8 @@ export function currentLocationCoordinates() {
         resolve(position);
       },
       error => {
-        reject('Error');
+        console.log(error);
+        reject(error);
       },
       {enableHighAccuracy: false, timeout: 5000, maximumAge: 10000},
     );

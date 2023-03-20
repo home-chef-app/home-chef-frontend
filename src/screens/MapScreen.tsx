@@ -5,6 +5,8 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
 import { selectAllSellers } from 'store/sellers';
 import { RootState } from 'store/store';
+import { SellerType } from 'store/sellers';
+import MapRestPanel from './MapRestPanel';
 
 
 const MapScreen = ({ }) => {
@@ -12,6 +14,10 @@ const MapScreen = ({ }) => {
 
   const userLoc = useSelector((state: RootState) => state.users.userLoc);
   const sellers = useSelector(selectAllSellers)
+  const [selectedSeller, setSelectedSeller] = React.useState<null | SellerType>(null)
+  console.log('Selected', selectedSeller)
+
+
 
   return (
     <>
@@ -32,10 +38,13 @@ const MapScreen = ({ }) => {
                   longitude: getLongitude(seller),
                   latitude: getLatitide(seller)
                 }}
-                onPress={() => console.log(seller)}
+                onPress={() => setSelectedSeller(seller)}
               />
             ))}
           </MapView>
+          {!!selectedSeller ? (
+            <MapRestPanel seller={selectedSeller} onClose={() => setSelectedSeller(null)} />
+          ) : null}
         </View>
       )}
 

@@ -14,6 +14,7 @@ import { NativeBaseProvider } from "native-base";
 import { theme } from './theme/nativeBaseTheme'
 import AppNavigator from './navigation/AppNavigator';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -27,11 +28,13 @@ const App = () => {
     <Provider store={store}>
       <NativeBaseProvider theme={theme}>
         <SafeAreaProvider style={backgroundStyle} >
-          <StatusBar
-            barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-            backgroundColor={backgroundStyle.backgroundColor}
-          />
-          <AppNavigator />
+          <GestureHandlerRootView style={backgroundStyle}>
+            <StatusBar
+              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+              backgroundColor={backgroundStyle.backgroundColor}
+            />
+            <AppNavigator />
+          </GestureHandlerRootView>
         </SafeAreaProvider>
       </NativeBaseProvider>
     </Provider>
