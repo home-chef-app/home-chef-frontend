@@ -5,12 +5,13 @@ import {
   EntityState,
 } from '@reduxjs/toolkit';
 import {setLoading} from '../appState';
-import {get, post, put} from '../../services/apiBaseService';
+import {get, post, put} from '../../services/ApiBaseService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setActiveUser, UserType} from '.';
 import print from '@src/utils';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import jwt_decode from 'jwt-decode';
+import {refreshAccessToken} from 'services/AuthService';
 
 type AuthParams = {
   phone: string;
@@ -20,37 +21,27 @@ type AuthParams = {
 export const initUserSession = createAsyncThunk(
   'users/initUserSession',
   async (_, thunkAPI) => {
+    console.log('getting user');
     const userString = await EncryptedStorage.getItem('userSession');
     if (userString) {
       const user = JSON.parse(userString);
-      const {
-        accessToken: {jwtToken},
-        refreshToken: {token},
-        phone,
-      } = user;
-      const {exp: tokenExpirationDate} = jwt_decode(jwtToken) as any;
+      const {access_token, refresh_token, phone} = user;
+      console.log('checking token');
+      const {exp: tokenExpirationDate} = jwt_decode(access_token) as any;
+      console.log('decoded token');
       const now = Math.round(new Date().getTime() / 1000);
       if (now > tokenExpirationDate) {
         print('TOKEN IS EXPIRED, REFRESHING');
         // TODO hit new endpoint with refresh token to get new accessToken
-        const response = await put('users/refreshIdToken', {
-          phone,
-          refreshToken: token,
-        });
-
-        const {result: idToken} = response;
-        await EncryptedStorage.setItem(
-          'userSession',
-          JSON.stringify({
-            ...user,
-            accessToken: {
-              jwtToken: idToken,
-            },
-          }),
-        );
+        const accessToken = await refreshAccessToken(phone, refresh_token);
+        const newUser = {
+          ...user,
+          access_token: accessToken,
+        };
+        thunkAPI.dispatch(setActiveUser(newUser));
+        await EncryptedStorage.setItem('userSession', JSON.stringify(newUser));
         print('TOKEN REFRESHED');
       }
-      console.log(user);
       return user;
     }
     console.log('Null');
@@ -62,19 +53,36 @@ export const signIn = createAsyncThunk(
   async ({phone, password}: AuthParams, thunkAPI) => {
     thunkAPI.dispatch(setLoading(true));
     // Call async API request
-    const result: UserType = await post('users/signin', {
+    const {
+      accessToken: {jwtToken: access_token},
+      cognito_sub,
+      createdAt: created_at,
+      first_name,
+      last_name,
+      id,
+      idToken: {jwtToken: id_token},
+      refreshToken: {token: refresh_token},
+      updatedAt: updated_at,
+    } = await post('users/signin', {
       phone,
       password,
     });
     print('sign in success');
-    await EncryptedStorage.setItem(
-      'userSession',
-      JSON.stringify({
-        ...result,
-      }),
-    );
+    const user = {
+      id,
+      phone,
+      first_name,
+      last_name,
+      created_at,
+      updated_at,
+      cognito_sub,
+      id_token,
+      access_token,
+      refresh_token,
+    };
+    await EncryptedStorage.setItem('userSession', JSON.stringify(user));
     print('user saved to storage');
-    return result;
+    return user;
   },
 );
 

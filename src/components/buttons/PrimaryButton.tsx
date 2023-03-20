@@ -22,7 +22,6 @@ type PrimaryButtonProps = {
 
 const PrimaryButton = (props: PrimaryButtonProps) => {
   const { text, isDisabled, isLoading, variant = 'solid', ...buttonProps } = props;
-  console.log(isLoading ?? isDisabled);
   return (
     <Button
       variant={variant}

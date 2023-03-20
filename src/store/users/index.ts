@@ -55,6 +55,10 @@ const usersSlice = createSlice({
     ) {
       state.userLoc = action.payload;
     },
+    setUserAccessToken(state, action: PayloadAction<string>) {
+      console.log('Setting new token in state');
+      if (state.activeUser) state.activeUser!.access_token = action.payload;
+    },
   },
   extraReducers: builder => {
     builder.addCase(signIn.pending, state => {
@@ -108,7 +112,8 @@ const usersSlice = createSlice({
   },
 });
 
-export const {setActiveUser, setUserLoc} = usersSlice.actions;
+export const {setActiveUser, setUserLoc, setUserAccessToken} =
+  usersSlice.actions;
 export default usersSlice.reducer;
 
 /*

@@ -5,7 +5,7 @@ import {
   EntityState,
 } from '@reduxjs/toolkit';
 import {SellerType} from '.';
-import {get, post, put} from '../../services/apiBaseService';
+import {get, post, put} from '../../services/ApiBaseService';
 import {setLoading} from '../appState';
 
 // Example of how to fetch sellers
