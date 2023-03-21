@@ -14,7 +14,6 @@ export const fetchSellers = createAsyncThunk(
   async (_, thunkAPI) => {
     thunkAPI.dispatch(setLoading(true));
     const sellers: SellerType[] = await get('sellers');
-    console.log(sellers);
     return sellers;
   },
 );

@@ -15,6 +15,7 @@ function BuyerRootNavigator() {
   const [loading, setLoading] = useState(true)
   const dispatch = useAppDispatch();
   useEffect(() => {
+
     initBuyerSession().finally(() => { setLoading(false) })
   }, [])
 
@@ -23,6 +24,7 @@ function BuyerRootNavigator() {
       //Fetch location
       await checkLocationPermissions()
       const result: any = await currentLocationCoordinates()
+
       if (result) {
         dispatch(setUserLoc({ lat: result.coords.latitude, lng: result.coords.longitude }))
       }
