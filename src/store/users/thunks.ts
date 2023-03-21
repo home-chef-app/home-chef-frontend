@@ -28,7 +28,7 @@ export const initUserSession = createAsyncThunk(
       const {access_token, refresh_token, phone} = user;
       console.log('checking token');
       const {exp: tokenExpirationDate} = jwt_decode(access_token) as any;
-      console.log('decoded token');
+      console.log('token expiry: ', tokenExpirationDate);
       const now = Math.round(new Date().getTime() / 1000);
       if (now > tokenExpirationDate) {
         print('TOKEN IS EXPIRED, REFRESHING');
@@ -42,6 +42,7 @@ export const initUserSession = createAsyncThunk(
         print('TOKEN REFRESHED');
         return newUser;
       }
+      return user;
     }
     console.log('Null');
     thunkAPI.rejectWithValue(null);
@@ -51,7 +52,6 @@ export const signIn = createAsyncThunk(
   'users/signIn',
   async ({phone, password}: AuthParams, thunkAPI) => {
     thunkAPI.dispatch(setLoading(true));
-    // Call async API request
     const {
       accessToken: {jwtToken: access_token},
       cognito_sub,
@@ -62,10 +62,14 @@ export const signIn = createAsyncThunk(
       idToken: {jwtToken: id_token},
       refreshToken: {token: refresh_token},
       updatedAt: updated_at,
-    } = await post('users/signin', {
-      phone,
-      password,
-    });
+    } = await post(
+      'users/signin',
+      {
+        phone,
+        password,
+      },
+      false,
+    );
     print('sign in success');
     const user = {
       id,

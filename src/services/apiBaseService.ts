@@ -28,7 +28,7 @@ const tryRefreshToken = async () => {
 
 // Helper class to make all requests to our api. We can customize as we find a cadence for how we hit our api.
 // No try/catch blocks is intentional, this way we can catch all errors in redux and handle appropriately. Cormac, 2023-01-19
-export const get = async (path: string, retries = 0, useToken = true) => {
+export const get = async (path: string, useToken = true, retries = 0) => {
   if (retries > 1) throw new Error('Could not refresh access token'); //refreshing token did not work
   console.log('GET: ', apiBaseUrl + path, retries);
   let token;
@@ -47,7 +47,7 @@ export const get = async (path: string, retries = 0, useToken = true) => {
   if (!data) {
     // 403 response so retry with new token, will throw error if it fails
     await tryRefreshToken();
-    await get(path, retries + 1);
+    await get(path, useToken, retries + 1);
   }
   return data;
 };
@@ -55,8 +55,8 @@ export const get = async (path: string, retries = 0, useToken = true) => {
 export const put = async (
   path: string,
   body: any,
-  retries = 0,
   useToken = true,
+  retries = 0,
 ) => {
   if (retries > 1) throw new Error('Could not refresh access token');
   console.log('PUT: ', apiBaseUrl + path, retries);
@@ -77,7 +77,7 @@ export const put = async (
   if (!data) {
     // 403 response so retry with new token, will throw error if it fails
     await tryRefreshToken();
-    await put(path, body, retries + 1);
+    await put(path, body, useToken, retries + 1);
   }
   return data;
 };
@@ -85,8 +85,8 @@ export const put = async (
 export const post = async (
   path: string,
   body: any,
-  retries = 0,
   useToken = true,
+  retries = 0,
 ) => {
   if (retries > 1) throw new Error('Could not refresh access token');
   console.log('POST: ', apiBaseUrl + path, retries);
@@ -108,12 +108,12 @@ export const post = async (
   if (!data) {
     // 403 response so retry with new token, will throw error if it fails
     await tryRefreshToken();
-    await post(path, body, retries + 1);
+    await post(path, body, useToken, retries + 1);
   }
   return data;
 };
 
-export const del = async (path: string, retries = 0, useToken = true) => {
+export const del = async (path: string, useToken = true, retries = 0) => {
   if (retries > 1) throw new Error('Could not refresh access token');
   console.log('PUT: ', apiBaseUrl + path, retries);
   let token;
@@ -132,7 +132,7 @@ export const del = async (path: string, retries = 0, useToken = true) => {
   if (!data) {
     // 403 response so retry with new token, will throw error if it fails
     await tryRefreshToken();
-    await del(path, retries + 1);
+    await del(path, useToken, retries + 1);
   }
   return data;
 };

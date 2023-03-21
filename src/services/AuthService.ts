@@ -10,7 +10,6 @@ export const refreshAccessToken = async (
       phone,
       refreshToken,
     },
-    0,
     false,
   );
   const {result: accessToken} = response;
