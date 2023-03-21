@@ -38,11 +38,10 @@ export const initUserSession = createAsyncThunk(
           ...user,
           access_token: accessToken,
         };
-        thunkAPI.dispatch(setActiveUser(newUser));
         await EncryptedStorage.setItem('userSession', JSON.stringify(newUser));
         print('TOKEN REFRESHED');
+        return newUser;
       }
-      return user;
     }
     console.log('Null');
     thunkAPI.rejectWithValue(null);
