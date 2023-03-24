@@ -95,11 +95,14 @@ export const createAccount = createAsyncThunk(
     // Call async API request
     console.log('create account:', phone, password);
     await AsyncStorage.setItem('user_id', '123');
-    console.log('Create account', phone, password);
-    const result: UserType = await post('users/signup', {
-      phone,
-      password,
-    });
+    const result: UserType = await post(
+      'users/signup',
+      {
+        phone,
+        password,
+      },
+      false,
+    );
     console.log('CREATE ACCOUNT', result);
     return result;
   },
@@ -112,15 +115,43 @@ export const confirmAccount = createAsyncThunk(
     console.log('confirm account:', phone, password, code);
     await AsyncStorage.setItem('user_id', '123');
     console.log('Create account', phone, password);
-    const result: UserType = (await post('users/confirm', {
-      first_name: 'Cormac',
-      last_name: 'Stewart',
+    const {
+      accessToken: {jwtToken: access_token},
+      cognito_sub,
+      createdAt: created_at,
+      first_name,
+      last_name,
+      id,
+      idToken: {jwtToken: id_token},
+      refreshToken: {token: refresh_token},
+      updatedAt: updated_at,
+    } = await post(
+      'users/confirm',
+      {
+        first_name: 'Cormac',
+        last_name: 'Stewart',
+        phone,
+        password,
+        code,
+      },
+      false,
+    );
+    print('confirm account success');
+    const user = {
+      id,
       phone,
-      password,
-      code,
-    })) as UserType;
-    console.log('CREATE ACCOUNT', result);
-    return result;
+      first_name,
+      last_name,
+      created_at,
+      updated_at,
+      cognito_sub,
+      id_token,
+      access_token,
+      refresh_token,
+    };
+    await EncryptedStorage.setItem('userSession', JSON.stringify(user));
+    print('user saved to storage');
+    return user;
   },
 );
 
