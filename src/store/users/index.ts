@@ -29,6 +29,7 @@ interface UserState {
   activeUser: UserType | null;
   userLoading: boolean;
   userLoc: null | {lat: number; lng: number};
+  initSessionLoading: boolean;
 }
 
 export const usersAdapter = createEntityAdapter<UserType>();
@@ -37,9 +38,11 @@ const initialState: UserState = {
   activeUser: null,
   userLoading: false,
   userLoc: null,
+  initSessionLoading: true,
 };
 usersAdapter.getInitialState({
   userLoading: false,
+  initSessionLoading: true,
 });
 
 const usersSlice = createSlice({
@@ -100,15 +103,15 @@ const usersSlice = createSlice({
       state.userLoading = false;
     });
     builder.addCase(initUserSession.pending, state => {
-      state.userLoading = true;
+      state.initSessionLoading = true;
     });
     builder.addCase(initUserSession.fulfilled, (state, action) => {
-      state.userLoading = false;
+      state.initSessionLoading = false;
       state.activeUser = action.payload!;
     });
     builder.addCase(initUserSession.rejected, state => {
       print('REJECTED');
-      state.userLoading = false;
+      state.initSessionLoading = false;
     });
   },
 });

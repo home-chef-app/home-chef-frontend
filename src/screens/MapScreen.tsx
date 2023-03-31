@@ -24,8 +24,8 @@ const MapScreen = ({ }) => {
       {!userLoc ? <Text>No User Location Perms</Text> : (
         <View style={styles.pageContainer}>
           <MapView style={{ flex: 1 }} provider={PROVIDER_GOOGLE} initialRegion={{
-            latitude: userLoc?.lat,
-            longitude: userLoc.lng,
+            latitude: 44.65137849025714,
+            longitude: -63.59011076985939,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }} >
