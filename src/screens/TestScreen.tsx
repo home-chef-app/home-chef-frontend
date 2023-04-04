@@ -6,7 +6,9 @@ import { RootState, useAppDispatch } from '../store/store';
 import { signOut } from '../store/users/thunks';
 import PrimaryButton from '../components/buttons/PrimaryButton';
 import SecondaryButton from '../components/buttons/SecondaryButton';
-import { get } from 'services/ApiBaseService';
+import { get } from 'services/apiBaseService';
+import FullScreenWrapper from './FullScreenWrapper';
+
 
 const styles = StyleSheet.create({
   pageContainer: {
@@ -17,6 +19,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   userContainer: {
+    flex: 1,
     backgroundColor: '#ffffff',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
@@ -60,38 +63,38 @@ const App = ({ }: TestProps) => {
   }
 
   return (
-    <>
-      <View style={styles.pageContainer}>
-        <>
-          {!!user && (
-            <View key={user.id} style={styles.userContainer}>
-              <View style={styles.userInfo}>
-                <Text style={styles.labelText}>Id</Text>
-                <Text>{user.id}</Text>
-              </View>
-              <View style={styles.userInfo}>
-                <Text style={styles.labelText}>Phone</Text>
-                <Text>{user.phone}</Text>
-              </View>
-              <View style={styles.userInfo}>
-                <Text style={styles.labelText}>First name</Text>
-                <Text>{user.first_name}</Text>
-              </View>
-              <View style={styles.userInfo}>
-                <Text style={styles.labelText}>Last name</Text>
-                <Text>{user.last_name}</Text>
-              </View>
-              <Text style={{ color: color }}>
-                {$t('helloWorld')}
-              </Text>
-              <PrimaryButton text="Test access token" onPress={() => testAuthToken()} />
-              <PrimaryButton text="Sign Out" onPress={() => dispatch(signOut())} />
-            </View>
-          )}
-        </>
 
-      </View>
-    </>
+    <FullScreenWrapper>
+
+      {!!user && (
+        <>
+          <View key={user.id} style={styles.userContainer}>
+            <View style={styles.userInfo}>
+              <Text style={styles.labelText}>Id</Text>
+              <Text>{user.id}</Text>
+            </View>
+            <View style={styles.userInfo}>
+              <Text style={styles.labelText}>Phone</Text>
+              <Text>{user.phone}</Text>
+            </View>
+            <View style={styles.userInfo}>
+              <Text style={styles.labelText}>First name</Text>
+              <Text>{user.first_name}</Text>
+            </View>
+            <View style={styles.userInfo}>
+              <Text style={styles.labelText}>Last name</Text>
+              <Text>{user.last_name}</Text>
+            </View>
+            <Text style={{ color: color }}>
+              {$t('helloWorld')}
+            </Text>
+            <PrimaryButton text="Test access token" onPress={() => testAuthToken()} />
+            <PrimaryButton text="Sign Out" onPress={() => dispatch(signOut())} />
+          </View>
+        </>
+      )}
+    </FullScreenWrapper>
+
   );
 };
 

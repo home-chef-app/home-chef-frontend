@@ -85,7 +85,7 @@ const App = ({ seller, onClose }: Props) => {
         onChange={handleSheetChange}
         backgroundComponent={() => <View style={styles.bg} />}
         //handleComponent={() => <View />}
-
+        enablePanDownToClose={true}
         backdropComponent={renderBackdrop}
 
 

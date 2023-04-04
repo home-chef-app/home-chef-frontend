@@ -5,7 +5,7 @@ import {
   EntityState,
 } from '@reduxjs/toolkit';
 import {setLoading} from '../appState';
-import {get, post, put} from '../../services/ApiBaseService';
+import {get, post, put} from '../../services/apiBaseService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setActiveUser, UserType} from '.';
 import print from '@src/utils';
@@ -22,30 +22,39 @@ export const initUserSession = createAsyncThunk(
   'users/initUserSession',
   async (_, thunkAPI) => {
     console.log('getting user');
-    const userString = await EncryptedStorage.getItem('userSession');
-    if (userString) {
-      const user = JSON.parse(userString);
-      const {access_token, refresh_token, phone} = user;
-      console.log('checking token');
-      const {exp: tokenExpirationDate} = jwt_decode(access_token) as any;
-      console.log('token expiry: ', tokenExpirationDate);
-      const now = Math.round(new Date().getTime() / 1000);
-      if (now > tokenExpirationDate) {
-        print('TOKEN IS EXPIRED, REFRESHING');
-        // TODO hit new endpoint with refresh token to get new accessToken
-        const accessToken = await refreshAccessToken(phone, refresh_token);
-        const newUser = {
-          ...user,
-          access_token: accessToken,
-        };
-        await EncryptedStorage.setItem('userSession', JSON.stringify(newUser));
-        print('TOKEN REFRESHED');
-        return newUser;
+    try {
+      const userString = await EncryptedStorage.getItem('userSession');
+      if (userString) {
+        const user = JSON.parse(userString);
+        const {access_token, refresh_token, phone} = user;
+        console.log('checking token');
+        console.log(access_token);
+        const {exp: tokenExpirationDate} = jwt_decode(access_token) as any;
+        console.log('token expiry: ', tokenExpirationDate);
+        const now = Math.round(new Date().getTime() / 1000);
+        if (now > tokenExpirationDate) {
+          print('TOKEN IS EXPIRED, REFRESHING');
+          // TODO hit new endpoint with refresh token to get new accessToken
+          const accessToken = await refreshAccessToken(phone, refresh_token);
+          const newUser = {
+            ...user,
+            access_token: accessToken,
+          };
+          await EncryptedStorage.setItem(
+            'userSession',
+            JSON.stringify(newUser),
+          );
+          print('TOKEN REFRESHED');
+          return newUser;
+        }
+        return user;
       }
-      return user;
+      console.log('Null');
+      thunkAPI.rejectWithValue(null);
+    } catch (e) {
+      console.log(e);
+      thunkAPI.rejectWithValue(null);
     }
-    console.log('Null');
-    thunkAPI.rejectWithValue(null);
   },
 );
 export const signIn = createAsyncThunk(

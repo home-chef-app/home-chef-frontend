@@ -1,4 +1,4 @@
-import {put} from './ApiBaseService';
+import {put} from './apiBaseService';
 
 export const refreshAccessToken = async (
   phone: string,
