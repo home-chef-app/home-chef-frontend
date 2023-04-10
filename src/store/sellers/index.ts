@@ -4,6 +4,7 @@ import {
   createSlice,
   EntityState,
 } from '@reduxjs/toolkit';
+import {string} from 'yup';
 import {setLoading} from '../appState';
 import {RootState} from '../store';
 import {fetchSellers} from './thunks';
@@ -13,6 +14,21 @@ export type SellerType = {
   name: string;
   description: string;
   location: any;
+};
+
+export type SellerQueryHits = {
+  _index: string;
+  _type: string;
+  _id: string;
+  _score: number;
+  _source: {
+    id: number;
+    name: string;
+    description: string;
+    location: any; //POINT (-66.646332 45.964993);,
+    createdAt: any;
+    updatedAt: any;
+  };
 };
 
 interface AdditionalSellerState {

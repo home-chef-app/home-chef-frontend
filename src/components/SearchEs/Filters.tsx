@@ -28,6 +28,7 @@ const Filters = ({
 }: any) => (
     <Modal animationType="slide" visible={isModalOpen}>
         <SafeAreaView>
+            <Text>Filter Page</Text>
             <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
                 <Text style={styles.closeButtonText}>Close</Text>
             </TouchableOpacity>

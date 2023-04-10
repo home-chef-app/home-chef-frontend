@@ -31,7 +31,7 @@ export function push(name: string, params?: any) {
 }
 
 export function goBack() {
-  if (isMountedRef.current && navigationRef.current) {
+  if (navigationRef.current) {
     // Perform navigation if the app has mounted
     navigationRef.current.goBack();
   } else {

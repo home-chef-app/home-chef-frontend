@@ -1,6 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
-import Highlight from './Highlight';
+import { StyleSheet, View, FlatList } from 'react-native';
+import { Text } from 'native-base'
+import { colors } from 'theme/colors';
+import { navigate } from 'services/NavigationService';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
     separator: {
@@ -16,15 +19,29 @@ const styles = StyleSheet.create({
     },
 });
 
-const InfiniteHits = ({ hits, hasMore, refineNext }: any) => (
+const getNext = () => {
+    console.log("FETCH MORE")
+}
+
+const renderSeparator = () => (
+    <View
+        style={{
+            backgroundColor: colors.dark[400],
+            height: 0.5,
+        }}
+    />
+);
+const InfiniteHits = ({ hits, hasMore }: any) => (
     <FlatList
         data={hits}
-        keyExtractor={item => item.objectID}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-        onEndReached={() => hasMore && refineNext()}
+        keyExtractor={item => item._id}
+        onEndReached={() => hasMore && getNext()}
+        ItemSeparatorComponent={renderSeparator}
         renderItem={({ item }) => (
             <View style={styles.item}>
-                <Highlight attribute="name" hit={item} />
+                <TouchableHighlight onPress={() => navigate('SellerProfile', { seller: item })}>
+                    <Text fontSize="lg">{item._source.name}</Text>
+                </TouchableHighlight>
             </View >
         )}
     />
