@@ -5,7 +5,7 @@ import {
   EntityState,
 } from '@reduxjs/toolkit';
 import {setLoading} from '../appState';
-import {get, post, put} from '../../services/apiBaseService';
+import {get, post, put} from '../../services/ApiBaseService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {setActiveUser, UserType} from '.';
 import print from '@src/utils';

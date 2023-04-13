@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useColorScheme, StyleSheet, View, Text } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useSelector } from 'react-redux';
-import { selectAllSellers, SellerQueryHits } from 'store/sellers';
+import { selectAllSellers, selectSellerIds, SellerQueryHits } from 'store/sellers';
 import { RootState } from 'store/store';
 import { SellerType } from 'store/sellers';
 import MapRestPanel from './MapRestPanel';
@@ -22,7 +22,7 @@ const MapScreen = ({ }) => {
   const [hits, setHits] = React.useState<SellerQueryHits[]>([])
   const userLoc = useSelector((state: RootState) => state.users.userLoc);
   const sellers = useSelector(selectAllSellers)
-  const [selectedSeller, setSelectedSeller] = React.useState<null | SellerType>(null)
+  const [selectedSellerId, setSelectedSellerId] = React.useState<null | string>(null)
 
   const [focused, setFocused] = useState(false)
   const [filterModal, setFilterModal] = useState(false)
@@ -52,7 +52,7 @@ const MapScreen = ({ }) => {
                       longitude: getLongitude(seller),
                       latitude: getLatitide(seller)
                     }}
-                    onPress={() => setSelectedSeller(seller)}
+                    onPress={() => setSelectedSellerId(seller.id)}
                   />
                 ))}
               </>
@@ -83,8 +83,8 @@ const MapScreen = ({ }) => {
           </View>
 
           {
-            !!selectedSeller ? (
-              <MapRestPanel seller={selectedSeller} onClose={() => setSelectedSeller(null)} />
+            !!selectedSellerId ? (
+              <MapRestPanel sellers={sellers} selectedSellerId={selectedSellerId} onClose={() => setSelectedSellerId(null)} />
             ) : null
           }
         </View >

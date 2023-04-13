@@ -6,7 +6,7 @@ import {
 } from '@reduxjs/toolkit';
 import print from '@src/utils';
 import {SellerType} from '.';
-import {get, post, put} from '../../services/apiBaseService';
+import {get, post, put} from '../../services/ApiBaseService';
 import {setLoading} from '../appState';
 
 // Example of how to fetch sellers

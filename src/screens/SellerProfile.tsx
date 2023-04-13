@@ -6,7 +6,7 @@ import { RootState, useAppDispatch } from '../store/store';
 import { signOut } from '../store/users/thunks';
 import PrimaryButton from '../components/buttons/PrimaryButton';
 import SecondaryButton from '../components/buttons/SecondaryButton';
-import { get } from 'services/apiBaseService';
+import { get } from 'services/ApiBaseService';
 import FullScreenWrapper from './FullScreenWrapper';
 import { SellerQueryHits, SellerType } from 'store/sellers';
 import { SafeAreaView } from 'react-native-safe-area-context';

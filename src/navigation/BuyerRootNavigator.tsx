@@ -8,6 +8,7 @@ import { setUserLoc } from 'store/users';
 import Spinner from 'components/common/FullPageLoader';
 import { fetchSellers } from 'store/sellers/thunks';
 import { useAppDispatch } from 'store/store';
+import print from '@src/utils';
 const RootStack = createNativeStackNavigator();
 
 
@@ -25,7 +26,7 @@ function BuyerRootNavigator() {
       //Fetch location
       await checkLocationPermissions()
       const result: any = await currentLocationCoordinates()
-
+      print(result);
       if (result) {
         dispatch(setUserLoc({ lat: result.coords.latitude, lng: result.coords.longitude }))
       }
