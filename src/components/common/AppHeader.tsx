@@ -23,9 +23,6 @@ function AppBar() {
         justifyContent="space-between"
         width={'100%'}>
         <HStack alignItems="center">
-          <IconButton
-            icon={<Icon name={'filter-outline'} size={25} color="muted.400" />}
-          />
           <Text color="white" fontSize="20" fontWeight="bold">
             Page Header
           </Text>

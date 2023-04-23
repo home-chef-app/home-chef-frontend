@@ -1,10 +1,55 @@
-import { extendTheme } from 'native-base';
-import { colors } from './colors';
-import { typography } from './typography';
+import {extendTheme} from 'native-base';
+import {colors} from './colors';
+import {typography} from './typography';
 
 export const theme = extendTheme({
   colors: colors,
   typography: typography,
+  fontConfig: {
+    Montserrat: {
+      100: {
+        normal: 'Montserrat-Light',
+        italic: 'Montserrat-LightItalic',
+      },
+      200: {
+        normal: 'Montserrat-Light',
+        italic: 'Montserrat-LightItalic',
+      },
+      300: {
+        normal: 'Montserrat-Light',
+        italic: 'Montserrat-LightItalic',
+      },
+      400: {
+        normal: 'Montserrat-Regular',
+        italic: 'Montserrat-Italic',
+      },
+      500: {
+        normal: 'Montserrat-Medium',
+        italic: 'Montserrat-MediumItalic',
+      },
+      600: {
+        normal: 'Montserrat-Medium',
+        italic: 'Montserrat-MediumItalic',
+      },
+      700: {
+        normal: 'Montserrat-Bold',
+        italic: 'Montserrat-BoldItalic',
+      },
+      800: {
+        normal: 'Montserrat-Bold',
+        italic: 'Montserrat-BoldItalic',
+      },
+      900: {
+        normal: 'Montserrat-Bold',
+        italic: 'Montserrat-BoldItalic',
+      },
+    },
+  },
+  fonts: {
+    heading: 'Montserrat-Bold',
+    body: 'Montserrat-Regular',
+    mono: 'Montserrat-Regular',
+  },
   opacity: {
     0: 0,
     5: 0.05,

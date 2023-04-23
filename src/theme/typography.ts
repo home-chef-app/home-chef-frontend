@@ -31,11 +31,6 @@ export const typography = {
     black: 900,
     extraBlack: 950,
   },
-  fonts: {
-    heading: undefined,
-    body: undefined,
-    mono: undefined,
-  },
   fontSizes: {
     '2xs': 10,
     xs: 12,
