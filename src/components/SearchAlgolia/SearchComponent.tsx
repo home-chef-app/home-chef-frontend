@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 
 const VirtualRefinementList = connectRefinementList(() => null);
 
-class App extends React.Component<any, any> {
+class SearchComponent extends React.Component<any, any> {
     root = {
         Root: View,
         props: {
@@ -94,4 +94,4 @@ class App extends React.Component<any, any> {
     }
 }
 
-export default App;
+export default SearchComponent;

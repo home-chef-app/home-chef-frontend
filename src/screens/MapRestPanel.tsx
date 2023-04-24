@@ -23,7 +23,7 @@ type Props = {
   onClose: () => any
 };
 
-const App = ({ sellers, selectedSellerId, onClose }: Props) => {
+const MapRestPanel = ({ sellers, selectedSellerId, onClose }: Props) => {
   const [loading, setLoading] = useState(true);
   const [panelIndex, setPanelIndex] = useState(1);
 
@@ -88,9 +88,7 @@ const App = ({ sellers, selectedSellerId, onClose }: Props) => {
         backgroundComponent={() => <View style={styles.bg} />}
         //handleComponent={() => <View />}
         enablePanDownToClose={true}
-        backdropComponent={renderBackdrop}
-
-
+      //backdropComponent={renderBackdrop}
       >
         <BottomSheetScrollView
           contentContainerStyle={styles.contentContainer}
@@ -153,5 +151,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default App;
+export default MapRestPanel;
 
