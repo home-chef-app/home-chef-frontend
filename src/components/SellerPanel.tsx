@@ -1,8 +1,11 @@
 import { Column, Icon, Image, Row, View } from "native-base"
 import React from "react"
 import { Dimensions, StyleSheet, Text } from "react-native"
+import { TouchableWithoutFeedback } from "react-native-gesture-handler"
+import PagerView from "react-native-pager-view"
 import Entypo from "react-native-vector-icons/Entypo"
 import Feather from "react-native-vector-icons/Feather"
+import { navigate } from "services/NavigationService"
 import { SellerType } from "store/sellers"
 import { colors } from 'theme/colors';
 
@@ -11,16 +14,21 @@ type SellerPanelProps = {
 }
 
 const SellerPanel = ({ seller }: SellerPanelProps) => {
+  const dishes = ['Spagetti', 'Butter Chicken'];
+  console.log(seller);
+
   return (
-    <View style={{
+    <TouchableWithoutFeedback onPress={() => navigate('SellerProfile', { seller })} style={{
       width: "100%",
       height: 200,
-      backgroundColor: "blue",
       borderRadius: 20,
       position: "relative",
       overflow: "hidden",
       marginBottom: 20
     }}>
+      {/* <PagerView style={{ flex: 1 }} initialPage={0}>
+        {dishes.map((dish) => ( */}
+      {/* <View key={dish.toString()} style={{ flex: 1 }}> */}
       <Image source={require('../assets/images/spagetti.jpg')} alt="seller-cover" style={{
         width: "100%",
         height: "70%",
@@ -47,7 +55,7 @@ const SellerPanel = ({ seller }: SellerPanelProps) => {
             source={require('../assets/images/chef.jpg')}
             alt="seller-profile"
             style={{
-              borderRadius: 14,
+              borderRadius: 10,
               width: Dimensions.get('window').width * 0.25,
               height: Dimensions.get('window').width * 0.25,
               position: "absolute"
@@ -87,7 +95,25 @@ const SellerPanel = ({ seller }: SellerPanelProps) => {
           <Text style={styles.text}>1.5 km</Text>
         </View>
       </Row>
-    </View>
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          height: 43,
+          width: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.3)',
+          justifyContent: 'center',
+          paddingLeft: 10
+        }}
+      >
+        <Text style={[styles.headlineText, { color: 'white' }]}>{seller.id == '1' ? dishes[0] : dishes[1]}</Text>
+      </View>
+      {/* </View>
+        ))};
+
+      </PagerView> */}
+
+    </TouchableWithoutFeedback>
   )
 }
 

@@ -99,7 +99,7 @@ const App = ({ sellers, selectedSellerId, onClose }: Props) => {
           onScroll={handleScroll}
         >
           <Column>
-            {sellers.map((seller) => <SellerPanel seller={seller} />)}
+            {sellers.map((seller) => <SellerPanel key={seller.id} seller={seller} />)}
           </Column>
         </BottomSheetScrollView>
       </BottomSheet>
