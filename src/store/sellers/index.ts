@@ -21,14 +21,7 @@ export type SellerQueryHits = {
   _type: string;
   _id: string;
   _score: number;
-  _source: {
-    id: number;
-    name: string;
-    description: string;
-    location: any; //POINT (-66.646332 45.964993);,
-    createdAt: any;
-    updatedAt: any;
-  };
+  _source: SellerType;
 };
 
 interface AdditionalSellerState {

@@ -11,9 +11,10 @@ import FullScreenWrapper from './FullScreenWrapper';
 import { SellerQueryHits, SellerType } from 'store/sellers';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { goBack } from 'services/NavigationService';
-import { Button, Column, Icon, IconButton, Image, Row } from 'native-base';
+import { Button, Column, Divider, Icon, IconButton, Image, Row } from 'native-base';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import Entypo from 'react-native-vector-icons/Entypo';
 
 
 const styles = StyleSheet.create({
@@ -53,12 +54,6 @@ const SellerProfile = ({ navigation, route }: any) => {
   console.log(seller)
   return (
     <SafeAreaView>
-      {/* <Text>
-        {seller._source.name}
-      </Text>
-      <Button onPress={() => goBack()}>
-        Back
-      </Button> */}
       <Column justifyContent='flex-start' alignItems='flex-start'>
         <View style={{
           width: "100%",
@@ -105,7 +100,7 @@ const SellerProfile = ({ navigation, route }: any) => {
           <Row justifyContent='space-between' alignItems='center' style={{
             position: 'absolute',
             width: '100%',
-            margin: 10,
+            padding: 10,
             top: 0,
             left: 0
           }}>
@@ -131,6 +126,13 @@ const SellerProfile = ({ navigation, route }: any) => {
             </View>
           </Row>
         </View>
+        <Row alignItems={'center'} width={'100%'} style={{ backgroundColor: 'black', paddingVertical: 5, paddingHorizontal: 10 }}>
+          <Icon as={Entypo} name="star" size={5} color="rgb(0,128,0)" />
+          <Divider orientation="vertical" style={{ height: '70%', marginLeft: 5, marginRight: 10 }} />
+          <Text style={{ color: 'white' }}>Address</Text>
+          <View style={{ flex: 1 }} />
+          <Text style={{ color: 'white' }}>1.5 km</Text>
+        </Row>
       </Column>
     </SafeAreaView>
 
